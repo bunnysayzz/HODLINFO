@@ -5,8 +5,12 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // MongoDB connection
-mongoose.connect('mongodb+srv://bunnysayzz:Azhar70@cluster0.iggwbjd.mongodb.net/', {
+mongoose.connect('mongodb+srv://bunnysayzz:Azhar70@cluster0.iggwbjd.mongodb.net/hodlinfo', {
   serverSelectionTimeoutMS: 50000, // Increase timeout to 50 seconds
+});
+
+mongoose.connection.on('connected', () => {
+  console.log('Connected to MongoDB');
 });
 
 // Define a schema and model
@@ -21,7 +25,7 @@ const tickerSchema = new mongoose.Schema({
   savings: Number,
 });
 
-const Ticker = mongoose.model('Ticker', tickerSchema);
+const Ticker = mongoose.model('Ticker', tickerSchema, 'tickers'); // Explicitly specify the collection name
 
 // Middleware
 app.use(express.static('public'));
@@ -39,7 +43,7 @@ const fetchData = async () => {
     const lowestPrice = Math.min(...top10Tickers.map(ticker => ticker.last));
 
     await Ticker.deleteMany({});
-    await Ticker.insertMany(top10Tickers.map(ticker => ({
+    const result = await Ticker.insertMany(top10Tickers.map(ticker => ({
       name: ticker.name,
       last: ticker.last,
       buy: ticker.buy,
@@ -49,6 +53,8 @@ const fetchData = async () => {
       difference: ((ticker.last - ticker.buy) / ticker.buy * 100).toFixed(2),
       savings: (ticker.last - lowestPrice).toFixed(2),
     })));
+
+    console.log(`Inserted ${result.length} tickers into the database.`);
   } catch (error) {
     console.error('Error fetching data:', error);
   }
