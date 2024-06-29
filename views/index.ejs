@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hodlinfo</title>
+  <link rel="stylesheet" href="/webfonts/fontawesome.css">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .container {
+      width: 80%;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header {
+      margin-bottom: 20px;
+      padding: 20px 0;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    header h1 {
+      font-size: 3em;
+      margin: 0;
+      color: var(--primary-color);
+      font-weight: bold;
+      text-shadow: 2px 2px var(--header-background-color);
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 10px;
+    }
+
+    .stats div {
+      font-size: 1.2em;
+      color: var(--primary-color);
+      transition: transform 0.3s;
+    }
+
+    .stats div:hover {
+      transform: scale(1.1);
+    }
+
+    main h2 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      color: var(--primary-color);
+      animation: fadeInDown 1s ease-in-out;
+    }
+
+    .price {
+      font-size: 3.5em;
+      margin-bottom: 20px;
+      color: var(--primary-color);
+      animation: pulse 1.5s infinite;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      animation: fadeInUp 1s ease-in-out;
+    }
+
+    table, th, td {
+      border: 1px solid var(--border-color);
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+      font-size: 1.1em;
+    }
+
+    th {
+      background-color: var(--header-background-color);
+      color: var(--primary-color);
+    }
+
+    tr:nth-child(even) {
+      background-color: var(--row-even-background-color);
+    }
+
+    tr:hover {
+      background-color: var(--row-hover-background-color);
+      cursor: pointer;
+    }
+
+    .fa-coins {
+      color: var(--primary-color);
+      margin-right: 5px;
+    }
+
+    .positive {
+      color: #00ff00;
+    }
+
+    .negative {
+      color: #ff0000;
+    }
+
+    .timer {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background-color: var(--header-background-color);
+      color: var(--primary-color);
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 1.2em;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .theme-switch-wrapper {
+      position: fixed;
+      top: 10px;
+      right: 70px;
+      display: flex;
+      align-items: center;
+    }
+
+    .theme-switch {
+      display: inline-block;
+      height: 34px;
+      position: relative;
+      width: 60px;
+    }
+
+    .theme-switch input {
+      display: none;
+    }
+
+    .slider {
+      background-color: #ccc;
+      bottom: 0;
+      cursor: pointer;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      transition: .4s;
+    }
+
+    .slider:before {
+      background-color: white;
+      bottom: 4px;
+      content: "";
+      height: 26px;
+      left: 4px;
+      position: absolute;
+      transition: .4s;
+      width: 26px;
+    }
+
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    .slider.round {
+      border-radius: 34px;
+    }
+
+    .slider.round:before {
+      border-radius: 50%;
+    }
+
+    :root {
+      --background-color: #1a1a1a;
+      --text-color: #e0e0e0;
+      --primary-color: #00ffcc;
+      --border-color: #444;
+      --header-background-color: #333;
+      --row-even-background-color: #2a2a2a;
+      --row-hover-background-color: #444;
+    }
+
+    .light-mode {
+      --background-color: #ffffff;
+      --text-color: #000000;
+      --primary-color: #007bff;
+      --border-color: #ddd;
+      --header-background-color: #f8f9fa;
+      --row-even-background-color: #f2f2f2;
+      --row-hover-background-color: #e9ecef;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+  </style>
+</head>
+<body>
+  <div class="theme-switch-wrapper">
+    <label class="theme-switch" for="checkbox">
+      <input type="checkbox" id="checkbox" />
+      <div class="slider round"></div>
+    </label>
+  </div>
+  <div class="timer" id="timer">60</div>
+  <div class="container">
+    <header>
+      <h1>HODLINFO</h1>
+      <div class="stats">
+        <div>0.1% 5 Mins</div>
+        <div>0.96% 1 Hour</div>
+        <div>2.73% 1 Day</div>
+        <div>7.51% 7 Days</div>
+      </div>
+    </header>
+    <main>
+      <h2>Best Price to Trade</h2>
+      <div class="price">₹ 26,56,110</div>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Platform</th>
+            <th>Last Traded Price</th>
+            <th>Buy / Sell Price</th>
+            <th>Difference</th>
+            <th>Savings</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% tickers.forEach((ticker, index) => { %>
+            <tr>
+              <td><%= index + 1 %></td>
+              <td><i class="fas fa-coins"></i> <%= ticker.name %></td>
+              <td>₹ <%= ticker.last %></td>
+              <td>₹ <%= ticker.buy %> / ₹ <%= ticker.sell %></td>
+              <td class="<%= ticker.difference >= 0 ? 'positive' : 'negative' %>"><%= ticker.difference %> %</td>
+              <td class="<%= ticker.savings >= 0 ? 'positive' : 'negative' %>">₹ <%= ticker.savings %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </main>
+  </div>
+  <script>
+    let countdown = 60;
+    const timerElement = document.getElementById('timer');
+
+    const updateTimer = () => {
+      countdown--;
+      timerElement.textContent = countdown;
+      if (countdown <= 0) {
+        location.reload();
+      }
+    };
+
+    setInterval(updateTimer, 1000);
+
+    const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+    const currentTheme = localStorage.getItem('theme');
+
+    if (currentTheme) {
+      document.body.classList.add(currentTheme);
+
+      if (currentTheme === 'light-mode') {
+        toggleSwitch.checked = true;
+      }
+    }
+
+    toggleSwitch.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        document.body.classList.add('light-mode');
+        localStorage.setItem('theme', 'light-mode');
+      } else {
+        document.body.classList.remove('light-mode');
+        localStorage.setItem('theme', 'dark-mode');
+      }
+    });
+  </script>
+</body>
+</html>
