@@ -23,6 +23,7 @@ const tickerSchema = new mongoose.Schema({
   base_unit: String,
   difference: Number,
   savings: Number,
+  icon: String, // Ensure icon field is included
 });
 
 const Ticker = mongoose.model('Ticker', tickerSchema, 'tickers'); // Explicitly specify the collection name
@@ -38,6 +39,14 @@ const fetchData = async () => {
     const tickers = response.data;
     const top10Tickers = Object.values(tickers).slice(0, 10);
 
+    // Define a mapping of platform names to icon classes
+    const platformIcons = {
+      btc: 'fab fa-bitcoin',
+      xrp: 'fas fa-coins', // Use a generic icon for XRP
+      eth: 'fab fa-ethereum',
+      // Add more mappings as needed
+    };
+
     // Calculate the highest and lowest prices for savings calculation
     const highestPrice = Math.max(...top10Tickers.map(ticker => ticker.last));
     const lowestPrice = Math.min(...top10Tickers.map(ticker => ticker.last));
@@ -52,6 +61,7 @@ const fetchData = async () => {
       base_unit: ticker.base_unit,
       difference: ((ticker.last - ticker.buy) / ticker.buy * 100).toFixed(2),
       savings: (ticker.last - lowestPrice).toFixed(2),
+      icon: platformIcons[ticker.base_unit] || 'fas fa-coins', // Default icon if not found
     })));
 
     console.log(`Inserted ${result.length} tickers into the database.`);

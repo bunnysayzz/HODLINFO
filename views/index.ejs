@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hodlinfo</title>
-  <link rel="stylesheet" href="/webfonts/fontawesome.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -23,9 +23,10 @@
     }
 
     header {
-      margin-bottom: 20px;
+      margin-bottom: 40px; /* Increase margin-bottom for more gap */
       padding: 20px 0;
       border-bottom: 2px solid var(--border-color);
+      text-align: left; /* Align header content to the left */
     }
 
     header h1 {
@@ -51,6 +52,11 @@
 
     .stats div:hover {
       transform: scale(1.1);
+    }
+
+    .stats div span {
+      display: block;
+      font-size: 2em; /* Larger size for time intervals */
     }
 
     main h2 {
@@ -233,10 +239,10 @@
     <header>
       <h1>HODLINFO</h1>
       <div class="stats">
-        <div>0.1% 5 Mins</div>
-        <div>0.96% 1 Hour</div>
-        <div>2.73% 1 Day</div>
-        <div>7.51% 7 Days</div>
+        <div>0.1% <span>5 Mins</span></div>
+        <div>0.96% <span>1 Hour</span></div>
+        <div>2.73% <span>1 Day</span></div>
+        <div>7.51% <span>7 Days</span></div>
       </div>
     </header>
     <main>
@@ -257,7 +263,7 @@
           <% tickers.forEach((ticker, index) => { %>
             <tr>
               <td><%= index + 1 %></td>
-              <td><i class="fas fa-coins"></i> <%= ticker.name %></td>
+              <td><i class="<%= ticker.icon %>"></i> <%= ticker.name %></td>
               <td>₹ <%= ticker.last %></td>
               <td>₹ <%= ticker.buy %> / ₹ <%= ticker.sell %></td>
               <td class="<%= ticker.difference >= 0 ? 'positive' : 'negative' %>"><%= ticker.difference %> %</td>
